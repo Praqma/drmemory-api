@@ -20,7 +20,7 @@ public abstract class DrMemoryError {
 	protected String header;
 	
 	protected List<StackTrace> trace = new ArrayList<StackTrace>();
-	protected List<String> notes = new ArrayList<String>();
+	protected List<Note> notes = new ArrayList<Note>();
 	
 	private static Logger logger = Logger.getLogger();
 	
@@ -42,7 +42,17 @@ public abstract class DrMemoryError {
 		}
 	}
 	
-	public abstract void parseHeader( int number, String header );
+	public static class Note {
+		public String note;
+		
+		public String toString() {
+			return note;
+		}
+	}
+	
+	public void parseHeader( String header ) {
+		this.header = header;
+	}
 	
 	public static final Pattern rx_stackTrace = Pattern.compile( "^#\\s?(\\d+) (\\S+)\\s+\\[(.*?)\\]$", Pattern.MULTILINE );
 	public static final Pattern rx_notes = Pattern.compile( "Note: (.*?)$", Pattern.MULTILINE );
@@ -61,9 +71,8 @@ public abstract class DrMemoryError {
 				st.function = mst.group( 2 );
 				st.line = Integer.parseInt( mst.group( 1 ) );
 				
-				logger.debug( "Adding:  " + st );
-				
 				onAddStackTrace( st );
+				logger.debug( "Adding:  " + st );
 				trace.add( st );
 			}
 			
@@ -71,10 +80,11 @@ public abstract class DrMemoryError {
 			Matcher mnotes = rx_notes.matcher( line );
 			if( mnotes.find() ) {
 				
-				String note = mnotes.group( 1 );
-				logger.debug( "Adding note:  " + note );
+				Note note = new Note();
+				note.note = mnotes.group( 1 );
 				
 				onAddNote( note );
+				logger.debug( "Adding note:  " + note );
 				notes.add( note );
 			}
 		}
@@ -90,7 +100,7 @@ public abstract class DrMemoryError {
 	 * Listener for on add note
 	 * @param note
 	 */
-	public void onAddNote( String note ) {}
+	public void onAddNote( Note note ) {}
 	
 	public int getNumber() {
 		return number;
@@ -100,7 +110,7 @@ public abstract class DrMemoryError {
 		return header;
 	}
 	
-	public static final Pattern rx_header = Pattern.compile( ".?Error #(\\d+): (.*?): (.*?)$", Pattern.MULTILINE );
+	public static final Pattern rx_header = Pattern.compile( ".?Error #(\\d+): (LEAK|UNINITIALIZED READ):? (.*?)$", Pattern.MULTILINE );
 	
 	public static DrMemoryError parse( String e ) throws InvalidInputException {
 		
@@ -126,7 +136,8 @@ public abstract class DrMemoryError {
 		DrMemoryError error = null;
 		try {
 			error = (DrMemoryError) cls.newInstance();
-			error.parseHeader( number, m.group( 3 ) );
+			error.number = number;
+			error.parseHeader( m.group( 3 ) );
 		} catch( Exception e1 ) {
 			logger.warning( "Unable to instantiate error " + errorType );
 			throw new InvalidInputException( "Instantiation of " + errorType + ": " + e1.getMessage() );

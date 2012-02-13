@@ -1,0 +1,32 @@
+Dr. Memory version 1.4.5 build 2 built on Nov 16 2011 22:44:01
+Application cmdline: ""C:\praqma\workspace2\alm\Win32\Debug\ALMsin.exe" "praqma""
+Recorded 32 suppression(s) from default c:\Program Files (x86)\Dr. Memory/bin/suppress-default.txt
+
+Error #1: UNINITIALIZED READ: reading 0x02979808-0x02979810 8 byte(s)
+# 0 CECache::CECache                        [c:\praqma\workspace2\atplib\policy\ecache.cpp:55]
+# 1 CATP14be::CATP14be                      [c:\praqma\workspace2\atplib\policy\atp14.cpp:84]
+# 2 CATP14be::clone                         [c:\praqma\workspace2\atplib\policy\atp14.cpp:396]
+# 3 CGrpPolicy::CGrpPolicy                  [c:\praqma\workspace2\atplib\policy\grppol.cpp:12]
+# 4 CGroup::CGroup                          [c:\praqma\workspace2\atplib\policy\group.cpp:70]
+# 5 CLiabs::CLiabs                          [c:\praqma\workspace2\complib\source\liabs.cpp:29]
+# 6 CCompany::CCompany                      [c:\praqma\workspace2\complib\source\company.cpp:25]
+# 7 main                                    [c:\praqma\workspace2\alm\main.cpp:123]
+Note: @0:00:48.033 in thread 2808
+Note: instruction: fld    0x000000a8(%ecx) -> %st0
+
+Error #2: UNINITIALIZED READ: reading 0x0290c588-0x0290c590 8 byte(s)
+# 0 CECache::SKey::operator=                                                             [c:\praqma\workspace2\atplib\policy\ecache.cpp:508]
+# 1 std::swap<CECache::SKey>                                                             [c:\program files (x86)\microsoft visual studio 10.0\vc\include\utility:103]
+# 2 std::iter_swap<CECache::SKey *,CECache::SKey *>                                      [c:\program files (x86)\microsoft visual studio 10.0\vc\include\xutility:2134]
+# 3 std::_Rotate<CECache::SKey *,int,CECache::SKey>                                      [c:\program files (x86)\microsoft visual studio 10.0\vc\include\xutility:3275]
+# 4 std::_Rotate<CECache::SKey *>                                                        [c:\program files (x86)\microsoft visual studio 10.0\vc\include\xutility:3289]
+# 5 std::rotate<std::_Vector_iterator<std::_Vector_val<CECache::SKey,std::allocator<CECache::SKey> > > > [c:\program files (x86)\microsoft visual studio 10.0\vc\include\xutility:3300]
+# 6 std::vector<CECache::SKey,std::allocator<CECache::SKey> >::emplace<CECache::SKey &>  [c:\program files (x86)\microsoft visual studio 10.0\vc\include\vector:689]
+# 7 std::vector<CECache::SKey,std::allocator<CECache::SKey> >::insert<CECache::SKey &>   [c:\program files (x86)\microsoft visual studio 10.0\vc\include\vector:675]
+# 8 CECache::_expcf                                                                      [c:\praqma\workspace2\atplib\policy\ecache.cpp:263]
+# 9 CECache::expcf                                                                       [c:\praqma\workspace2\atplib\policy\ecache.cpp:190]
+#10 CATP11::CATP11Benefit::initialize                                                    [c:\praqma\workspace2\atplib\policy\atp11.cpp:171]
+#11 CATP11::CATP11                                                                       [c:\praqma\workspace2\atplib\policy\atp11.cpp:39]
+Note: @0:00:54.595 in thread 2808
+Note: instruction: fld    0x18(%ecx) -> %st0
+

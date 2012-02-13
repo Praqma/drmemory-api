@@ -1,7 +1,12 @@
 package net.praqma.drmemory;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.praqma.util.debug.Logger;
 import net.praqma.util.execute.CmdResult;
@@ -45,8 +50,5 @@ public class DrMemory {
 			throw new IOException( "Unable to execute " + cmd + ": " + e.getMessage() );
 		}
 	}
-	
-	public void parse() {
-		
-	}
+
 }

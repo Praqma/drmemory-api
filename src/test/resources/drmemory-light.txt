@@ -1,0 +1,71 @@
+Dr. Memory version 1.4.5 build 2 built on Nov 16 2011 22:44:01
+Application cmdline: ""C:\praqma\workspace2\alm\Win32\Debug\ALMsin.exe" "praqma""
+Recorded 32 suppression(s) from default c:\Program Files (x86)\Dr. Memory/bin/suppress-default.txt
+
+Error #1: UNINITIALIZED READ: reading 0x02979808-0x02979810 8 byte(s)
+# 0 CECache::CECache                        [c:\praqma\workspace2\atplib\policy\ecache.cpp:55]
+# 1 CATP14be::CATP14be                      [c:\praqma\workspace2\atplib\policy\atp14.cpp:84]
+# 2 CATP14be::clone                         [c:\praqma\workspace2\atplib\policy\atp14.cpp:396]
+# 3 CGrpPolicy::CGrpPolicy                  [c:\praqma\workspace2\atplib\policy\grppol.cpp:12]
+# 4 CGroup::CGroup                          [c:\praqma\workspace2\atplib\policy\group.cpp:70]
+# 5 CLiabs::CLiabs                          [c:\praqma\workspace2\complib\source\liabs.cpp:29]
+# 6 CCompany::CCompany                      [c:\praqma\workspace2\complib\source\company.cpp:25]
+# 7 main                                    [c:\praqma\workspace2\alm\main.cpp:123]
+Note: @0:00:48.033 in thread 2808
+Note: instruction: fld    0x000000a8(%ecx) -> %st0
+
+Error #82: LEAK 200 direct bytes 0x029e7368-0x029e7430 + 323596 indirect bytes
+# 0 operator new                                   [f:\dd\vctools\crt_bld\self_x86\crt\src\new.cpp:59]
+# 1 CRedRiskBudget::operator=                      [c:\praqma\workspace2\complib\riskbudget\redbudget.cpp:102]
+# 2 CRedRiskBudget::CRedRiskBudget                 [c:\praqma\workspace2\complib\riskbudget\redbudget.cpp:63]
+# 3 CRedRiskBudget::clone                          [c:\praqma\workspace2\complib\riskbudget\redbudget.cpp:338]
+# 4 CRiskClassAlloc::operator=                     [c:\praqma\workspace2\complib\strategy\rcalloc.cpp:74]
+# 5 CRiskClassAlloc::CRiskClassAlloc               [c:\praqma\workspace2\complib\strategy\rcalloc.cpp:49]
+# 6 CRiskClassAlloc::clone                         [c:\praqma\workspace2\complib\strategy\rcalloc.cpp:280]
+# 7 CCompany::add_strategy                         [c:\praqma\workspace2\complib\source\company.cpp:51]
+# 8 main                                           [c:\praqma\workspace2\alm\main.cpp:127]
+
+DUPLICATE ERROR COUNTS:
+	Error #   2:    115
+	Error #   3:    115
+	Error #  12:    300
+	Error #  13:    300
+	Error #  14:    630
+	Error #  15:    630
+	Error #  16:    506
+	Error #  17:    506
+	Error #  18:    210
+	Error #  19:    210
+	Error #  21:      5
+	Error #  22:      5
+	Error #  23:     59
+	Error #  24:     59
+	Error #  25:    118
+	Error #  26:    118
+	Error #  27:     59
+	Error #  28:     59
+	Error #  30:      2
+	Error #  32:      2
+	Error #  34:      2
+	Error #  39:      2
+	Error #  40:      2
+	Error #  47:      2
+	Error #  50:      2
+	Error #  57:      2
+	Error #  60:      3
+	Error #  61:      4
+	Error #  74:      5
+
+SUPPRESSIONS USED:
+
+ERRORS FOUND:
+      0 unique,     0 total unaddressable access(es)
+     28 unique,  4014 total uninitialized access(es)
+      1 unique,     1 total invalid heap argument(s)
+      0 unique,     0 total warning(s)
+     52 unique,    69 total, 620936 byte(s) of leak(s)
+      1 unique,     1 total,     64 byte(s) of possible leak(s)
+ERRORS IGNORED:
+    305 still-reachable allocation(s)
+         (re-run with "-show_reachable" for details)
+Details: C:\Documents and Settings\BAPYWO\Application Data/Dr. Memory/DrMemory-ALMsin.exe.2508.000/results.txt
