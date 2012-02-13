@@ -1,0 +1,11 @@
+Error #1: UNINITIALIZED READ: reading 0x02979808-0x02979810 8 byte(s)
+# 0 CECache::CECache                        [c:\praqma\workspace2\atplib\policy\ecache.cpp:55]
+# 1 CATP14be::CATP14be                      [c:\praqma\workspace2\atplib\policy\atp14.cpp:84]
+# 2 CATP14be::clone                         [c:\praqma\workspace2\atplib\policy\atp14.cpp:396]
+# 3 CGrpPolicy::CGrpPolicy                  [c:\praqma\workspace2\atplib\policy\grppol.cpp:12]
+# 4 CGroup::CGroup                          [c:\praqma\workspace2\atplib\policy\group.cpp:70]
+# 5 CLiabs::CLiabs                          [c:\praqma\workspace2\complib\source\liabs.cpp:29]
+# 6 CCompany::CCompany                      [c:\praqma\workspace2\complib\source\company.cpp:25]
+# 7 main                                    [c:\praqma\workspace2\alm\main.cpp:123]
+Note: @0:00:48.033 in thread 2808
+Note: instruction: fld    0x000000a8(%ecx) -> %st0
