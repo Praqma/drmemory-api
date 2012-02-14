@@ -17,8 +17,6 @@ import net.praqma.util.debug.Logger;
 public class DrMemoryResult {
 	private static Logger logger = Logger.getLogger();
 	
-	private File file;
-	
 	public static class ErrorSummary {
 		public int unique = 0;
 		public int total = 0;
@@ -163,8 +161,6 @@ public class DrMemoryResult {
 				continue;
 			}
 			
-			logger.debug( "\n\nE IS: " + e );
-			
 			
 		}
 		
@@ -183,7 +179,7 @@ public class DrMemoryResult {
 	public static final Pattern rx_error_still_ = Pattern.compile( "^\\s*(\\d+) still-reachable allocation\\(s\\)\\s*$", Pattern.MULTILINE );
 	
 	public static void getErrorSummary( DrMemoryResult result, String summary ) {
-		logger.debug( summary );
+		//logger.debug( summary );
 		
 		
 		Matcher m_unaddr = rx_error_unaddr.matcher( summary );
@@ -249,7 +245,7 @@ public class DrMemoryResult {
 		
 		Matcher m_still_ = rx_error_still_.matcher( summary );
 		if( m_still_.find() ) {
-			logger.debug( "still-reachable allocations!" );
+			logger.debug( "Found still-reachable allocations!" );
 			result.stillReachableAllocations = Integer.parseInt( m_still_.group( 1 ) );
 		}
 		
