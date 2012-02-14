@@ -33,9 +33,9 @@ public class TestDrMemoryResult {
 		System.out.println( "URL: " + s );
 		DrMemoryResult result = DrMemoryResult.parse( new File( s.getFile() ) );
 		
-		assertEquals( "1.4.5 build 2", result.version );
-		assertEquals( "Nov 16 2011 22:44:01", result.date );
-		assertEquals( "\"C:\\praqma\\workspace2\\alm\\Win32\\Debug\\ALMsin.exe\" \"praqma\"", result.cmd );
+		assertEquals( "1.4.5 build 2", result.getVersion() );
+		assertEquals( "Nov 16 2011 22:44:01", result.getDate() );
+		assertEquals( "\"C:\\praqma\\workspace2\\alm\\Win32\\Debug\\ALMsin.exe\" \"praqma\"", result.getCmd() );
 	}
 	
 	@Test
