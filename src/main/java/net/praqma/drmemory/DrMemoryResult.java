@@ -51,6 +51,10 @@ public class DrMemoryResult {
 	
 	public static final Pattern rx_version = Pattern.compile( "^.*version (.*?) built on (.*?)$", Pattern.MULTILINE );
 	public static final Pattern rx_command = Pattern.compile( "^Application cmdline: \"(.*)\"\\s*$", Pattern.MULTILINE );
+	//public static final Pattern rx_duplicates = Pattern.compile( "^DUPLICATE ERROR COUNTS:\\s*$(.*?)^\\s*$", Pattern.MULTILINE | Pattern.DOTALL );
+	public static final Pattern rx_duplicates = Pattern.compile( "^DUPLICATE ERROR COUNTS:\\s*$", Pattern.MULTILINE | Pattern.DOTALL );
+	
+	public static final Pattern rx_duplicates_finder = Pattern.compile( "^\\s*Error #\\s*(\\d+):\\s*(\\d+)\\s*$", Pattern.MULTILINE | Pattern.DOTALL );
 
 	public static final int __TOP_COUNT = 3;
 
@@ -71,7 +75,6 @@ public class DrMemoryResult {
 		}
 		
 		Matcher mcmd = rx_command.matcher( top[1] );
-		logger.debug( "LINE 1: " + top[1] );
 		result.cmd = "?";
 		if( mcmd.find() ) {
 			result.cmd = mcmd.group( 1 );
@@ -80,18 +83,49 @@ public class DrMemoryResult {
 			logger.error( "Could not get command line" );
 		}
 		
+		/* Get the elements and retrieve the individual errors */
 		result.elements = DrMemoryResult.getElements( file );
 		
 		for( String e : result.elements ) {
-			if( e.startsWith( "Error" ) ) {
-				logger.debug( "HERE" );
+			if( e.startsWith( "Error #" ) ) {
+				//logger.debug( "HERE" );
 				DrMemoryError error = DrMemoryError.parse( e );
-				result.errors.put( error.getNumber(), error );
+				result.errors.put( error.getIdentifier(), error );
+				
+				continue;
+			}
+			
+			/* Get duplicate count */
+			//logger.debug( "\n\nE IS: " + e );
+			Matcher m = rx_duplicates.matcher( e );
+			if( m.find() ) {
+				logger.debug( "Found duplicates" );
+				getDuplicates( result, e );
 			}
 		}
 		
+		
 		return result;
 	}
+	
+	
+	public static void getDuplicates( DrMemoryResult result, String duplicates ) {
+		Matcher m = rx_duplicates_finder.matcher( duplicates );
+		
+		while( m.find() ) {
+			Integer id = Integer.parseInt( m.group( 1 ) );
+			int cnt = Integer.parseInt( m.group( 2 ) );
+			
+			//logger.debug( "Setting " + cnt + " duplicate" + ( cnt == 1 ? "" : "s" ) + " to " + id );
+			
+			try {
+				result.getErrors().get( id ).setDuplicates( cnt );
+			} catch( Exception e ) {
+				logger.warning( "Unable to set " + cnt + " duplicate" + ( cnt == 1 ? "" : "s" ) + " to " + id );
+			}
+		}
+	}
+
 	
 	public static List<String> getElements( File file ) throws IOException {
 		FileReader fr = new FileReader( file );

@@ -34,7 +34,7 @@ public class TestError {
 		
 		DrMemoryError error = DrMemoryError.parse( UrlToString( s ) );
 		
-		assertTrue( error.getNumber() == 1 );
+		assertTrue( error.getIdentifier() == 1 );
 		
 		assertEquals( error.getheader(), "reading 0x02979808-0x02979810 8 byte(s)" );
 	}

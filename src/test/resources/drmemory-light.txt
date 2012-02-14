@@ -14,7 +14,7 @@ Error #1: UNINITIALIZED READ: reading 0x02979808-0x02979810 8 byte(s)
 Note: @0:00:48.033 in thread 2808
 Note: instruction: fld    0x000000a8(%ecx) -> %st0
 
-Error #82: LEAK 200 direct bytes 0x029e7368-0x029e7430 + 323596 indirect bytes
+Error #2: LEAK 200 direct bytes 0x029e7368-0x029e7430 + 323596 indirect bytes
 # 0 operator new                                   [f:\dd\vctools\crt_bld\self_x86\crt\src\new.cpp:59]
 # 1 CRedRiskBudget::operator=                      [c:\praqma\workspace2\complib\riskbudget\redbudget.cpp:102]
 # 2 CRedRiskBudget::CRedRiskBudget                 [c:\praqma\workspace2\complib\riskbudget\redbudget.cpp:63]
@@ -27,34 +27,7 @@ Error #82: LEAK 200 direct bytes 0x029e7368-0x029e7430 + 323596 indirect bytes
 
 DUPLICATE ERROR COUNTS:
 	Error #   2:    115
-	Error #   3:    115
-	Error #  12:    300
-	Error #  13:    300
-	Error #  14:    630
-	Error #  15:    630
-	Error #  16:    506
-	Error #  17:    506
-	Error #  18:    210
-	Error #  19:    210
-	Error #  21:      5
-	Error #  22:      5
-	Error #  23:     59
-	Error #  24:     59
-	Error #  25:    118
-	Error #  26:    118
-	Error #  27:     59
-	Error #  28:     59
-	Error #  30:      2
-	Error #  32:      2
-	Error #  34:      2
-	Error #  39:      2
-	Error #  40:      2
-	Error #  47:      2
-	Error #  50:      2
-	Error #  57:      2
-	Error #  60:      3
-	Error #  61:      4
-	Error #  74:      5
+
 
 SUPPRESSIONS USED:
 

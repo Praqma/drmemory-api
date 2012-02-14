@@ -54,5 +54,6 @@ public class TestDrMemoryResult {
 		DrMemoryResult result = DrMemoryResult.parse( new File( s.getFile() ) );
 		
 		assertTrue( 2 == result.getErrors().size() );
+		assertTrue( result.getErrors().get( 2 ).getDuplicates() == 115 );
 	}
 }

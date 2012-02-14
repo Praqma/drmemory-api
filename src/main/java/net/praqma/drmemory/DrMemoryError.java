@@ -16,8 +16,9 @@ import net.praqma.drmemory.exceptions.InvalidInputException;
 import net.praqma.util.debug.Logger;
 
 public abstract class DrMemoryError {
-	protected int number;
+	protected int identifier;
 	protected String header;
+	protected int duplicates = 1;
 	
 	protected List<StackTrace> trace = new ArrayList<StackTrace>();
 	protected List<Note> notes = new ArrayList<Note>();
@@ -57,8 +58,8 @@ public abstract class DrMemoryError {
 	public static final Pattern rx_stackTrace = Pattern.compile( "^#\\s?(\\d+) (\\S+)\\s+\\[(.*?)\\]$", Pattern.MULTILINE );
 	public static final Pattern rx_notes = Pattern.compile( "Note: (.*?)$", Pattern.MULTILINE );
 	
-	public void getBody( String body ) {
-		String[] lines = body.split( "\\n" );
+	public void getBody( String error ) {
+		String[] lines = error.split( "\\n" );
 		
 		for( String line : lines ) {
 			
@@ -102,12 +103,36 @@ public abstract class DrMemoryError {
 	 */
 	public void onAddNote( Note note ) {}
 	
-	public int getNumber() {
-		return number;
+	/**
+	 * Returns the identifier of the error
+	 * @return
+	 */
+	public int getIdentifier() {
+		return identifier;
 	}
 	
+	/**
+	 * Returns the header of the error
+	 * @return
+	 */
 	public String getheader() {
 		return header;
+	}
+	
+	/**
+	 * Returns the number of duplicates of this error
+	 * @return
+	 */
+	public int getDuplicates() {
+		return duplicates;
+	}
+	
+	/**
+	 * Sets the number of duplicates
+	 * @param number
+	 */
+	public void setDuplicates( int number ) {
+		this.duplicates = number;
 	}
 	
 	//public static final Pattern rx_header = Pattern.compile( ".?Error #(\\d+): (LEAK|UNINITIALIZED READ):? (.*?)$", Pattern.MULTILINE );
@@ -137,7 +162,7 @@ public abstract class DrMemoryError {
 		DrMemoryError error = null;
 		try {
 			error = (DrMemoryError) cls.newInstance();
-			error.number = number;
+			error.identifier = number;
 			error.parseHeader( m.group( 3 ) );
 		} catch( Exception e1 ) {
 			logger.warning( "Unable to instantiate error " + errorType );
