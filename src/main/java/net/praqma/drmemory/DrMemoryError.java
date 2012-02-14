@@ -72,7 +72,7 @@ public abstract class DrMemoryError {
 				st.line = Integer.parseInt( mst.group( 1 ) );
 				
 				onAddStackTrace( st );
-				logger.debug( "Adding:  " + st );
+				//logger.debug( "Adding:  " + st );
 				trace.add( st );
 			}
 			
@@ -84,7 +84,7 @@ public abstract class DrMemoryError {
 				note.note = mnotes.group( 1 );
 				
 				onAddNote( note );
-				logger.debug( "Adding note:  " + note );
+				//logger.debug( "Adding note:  " + note );
 				notes.add( note );
 			}
 		}
@@ -110,7 +110,8 @@ public abstract class DrMemoryError {
 		return header;
 	}
 	
-	public static final Pattern rx_header = Pattern.compile( ".?Error #(\\d+): (LEAK|UNINITIALIZED READ):? (.*?)$", Pattern.MULTILINE );
+	//public static final Pattern rx_header = Pattern.compile( ".?Error #(\\d+): (LEAK|UNINITIALIZED READ):? (.*?)$", Pattern.MULTILINE );
+	public static final Pattern rx_header = Pattern.compile( ".?Error #(\\d+): ([A-Z\\s]+):? (.*?)$", Pattern.MULTILINE );
 	
 	public static DrMemoryError parse( String e ) throws InvalidInputException {
 		

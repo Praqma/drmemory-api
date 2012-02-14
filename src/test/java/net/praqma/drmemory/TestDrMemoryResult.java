@@ -53,6 +53,6 @@ public class TestDrMemoryResult {
 		System.out.println( "URL: " + s );
 		DrMemoryResult result = DrMemoryResult.parse( new File( s.getFile() ) );
 		
-		assertTrue( 2 == result.getElements().size() );
+		assertTrue( 2 == result.getErrors().size() );
 	}
 }
