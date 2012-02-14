@@ -18,7 +18,7 @@ public class DrMemory {
 	private File application;
 	private String parameters = "";
 	
-	private static File drmemory;
+	private static String drmemory = "drmemory.exe";
 	
 	private CommandLineInterface cli = CommandLine.getInstance();
 	
@@ -36,7 +36,7 @@ public class DrMemory {
 		this.parameters = parameters;
 	}
 	
-	public static void setExecutable( File drmemory ) {
+	public static void setExecutable( String drmemory ) {
 		DrMemory.drmemory = drmemory;
 	}
 	

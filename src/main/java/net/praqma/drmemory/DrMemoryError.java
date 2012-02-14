@@ -1,6 +1,5 @@
 package net.praqma.drmemory;
 
-import java.io.InvalidObjectException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,9 +7,12 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.praqma.drmemory.errors.InvalidHeapArgument;
 import net.praqma.drmemory.errors.Leak;
+import net.praqma.drmemory.errors.UnaddressableAccess;
 import net.praqma.drmemory.errors.UninitializedRead;
 import net.praqma.drmemory.errors.Unknown;
+import net.praqma.drmemory.errors.Warning;
 import net.praqma.drmemory.exceptions.InvalidErrorTypeException;
 import net.praqma.drmemory.exceptions.InvalidInputException;
 import net.praqma.util.debug.Logger;
@@ -31,6 +33,9 @@ public abstract class DrMemoryError {
 	static {
 		errors.put( "LEAK", Leak.class );
 		errors.put( "UNINITIALIZED READ", UninitializedRead.class );
+		errors.put( "INVALID HEAP ARGUMENT", InvalidHeapArgument.class );
+		errors.put( "UNADDRESSABLE ACCESS", UnaddressableAccess.class );
+		errors.put( "WARNING", Warning.class );
 	}
 	
 	public static class StackTrace {
