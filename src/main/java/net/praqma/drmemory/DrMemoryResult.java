@@ -18,9 +18,10 @@ public class DrMemoryResult {
 	private static Logger logger = Logger.getLogger();
 	
 	public static class ErrorSummary {
-		public int unique = 0;
-		public int total = 0;
-		public long info = 0;
+		public String header = "";
+		public Integer unique;
+		public Integer total;
+		public String info;
 	}
 	
 	private ErrorSummary unaddressableAccesses = new ErrorSummary();
@@ -29,8 +30,9 @@ public class DrMemoryResult {
 	private ErrorSummary warnings = new ErrorSummary();
 	private ErrorSummary bytesOfLeaks = new ErrorSummary();
 	private ErrorSummary bytesOfPossibleLeaks = new ErrorSummary();
+	private ErrorSummary stillReachableAllocations = new ErrorSummary();
 	
-	int stillReachableAllocations = 0;
+	private List<ErrorSummary> list = new ArrayList<ErrorSummary>();
 	
 	private String version;
 	private String date;
@@ -88,10 +90,14 @@ public class DrMemoryResult {
 		return bytesOfPossibleLeaks;
 	}
 
-	public int getStillReachableAllocations() {
+	public ErrorSummary getStillReachableAllocations() {
 		return stillReachableAllocations;
 	}
 
+	
+	public List<ErrorSummary> getSummaries() {
+		return list;
+	}
 
 
 
@@ -164,6 +170,15 @@ public class DrMemoryResult {
 			
 		}
 		
+		/* Make list */
+		result.list.add( result.bytesOfLeaks );
+		result.list.add( result.bytesOfPossibleLeaks );
+		result.list.add( result.invalidHeapArguments );
+		result.list.add( result.stillReachableAllocations );
+		result.list.add( result.unaddressableAccesses );
+		result.list.add( result.uninitializedAccess );
+		result.list.add( result.warnings );
+		
 		
 		return result;
 	}
@@ -186,6 +201,7 @@ public class DrMemoryResult {
 		if( m_unaddr.find() ) {
 			logger.debug( "Found unaddressble accesses!" );
 			ErrorSummary es = new ErrorSummary();
+			es.header = "Unaddressble accesses";
 			es.unique = Integer.parseInt( m_unaddr.group( 1 ) );
 			es.total = Integer.parseInt( m_unaddr.group( 2 ) );
 			result.unaddressableAccesses = es;
@@ -196,6 +212,7 @@ public class DrMemoryResult {
 		if( m_uninit.find() ) {
 			logger.debug( "Found uninitialized accesses!" );
 			ErrorSummary es = new ErrorSummary();
+			es.header = "Uninitialized accesses";
 			es.unique = Integer.parseInt( m_uninit.group( 1 ) );
 			es.total = Integer.parseInt( m_uninit.group( 2 ) );
 			result.uninitializedAccess = es;
@@ -206,6 +223,7 @@ public class DrMemoryResult {
 		if( m_invali.find() ) {
 			logger.debug( "Found invalid heap argument!" );
 			ErrorSummary es = new ErrorSummary();
+			es.header = "Invalid heap arguments";
 			es.unique = Integer.parseInt( m_invali.group( 1 ) );
 			es.total = Integer.parseInt( m_invali.group( 2 ) );
 			result.invalidHeapArguments = es;
@@ -216,6 +234,7 @@ public class DrMemoryResult {
 		if( m_warnin.find() ) {
 			logger.debug( "Found warning!" );
 			ErrorSummary es = new ErrorSummary();
+			es.header = "Warnings";
 			es.unique = Integer.parseInt( m_warnin.group( 1 ) );
 			es.total = Integer.parseInt( m_warnin.group( 2 ) );
 			result.warnings = es;
@@ -226,9 +245,10 @@ public class DrMemoryResult {
 		if( m_leaks.find() ) {
 			logger.debug( "Found leaks!" );
 			ErrorSummary es = new ErrorSummary();
+			es.header = "Leaks";
 			es.unique = Integer.parseInt( m_leaks.group( 1 ) );
 			es.total = Integer.parseInt( m_leaks.group( 2 ) );
-			es.info =  Integer.parseInt( m_leaks.group( 3 ) );
+			es.info = m_leaks.group( 3 ) + " bytes";
 			result.bytesOfLeaks = es;
 		}
 		
@@ -237,16 +257,20 @@ public class DrMemoryResult {
 		if( m_possib.find() ) {
 			logger.debug( "Found possible leaks!" );
 			ErrorSummary es = new ErrorSummary();
+			es.header = "Possible leaks";
 			es.unique = Integer.parseInt( m_possib.group( 1 ) );
 			es.total = Integer.parseInt( m_possib.group( 2 ) );
-			es.info =  Integer.parseInt( m_possib.group( 3 ) );
+			es.info =  m_possib.group( 3 ) + " bytes";
 			result.bytesOfPossibleLeaks = es;
 		}
 		
 		Matcher m_still_ = rx_error_still_.matcher( summary );
 		if( m_still_.find() ) {
 			logger.debug( "Found still-reachable allocations!" );
-			result.stillReachableAllocations = Integer.parseInt( m_still_.group( 1 ) );
+			ErrorSummary es = new ErrorSummary();
+			es.header = "Still-reachable allocations";
+			es.total = Integer.parseInt( m_still_.group( 1 ) );
+			result.stillReachableAllocations = es;
 		}
 		
 	}

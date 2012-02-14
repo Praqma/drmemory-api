@@ -29,7 +29,7 @@ public class TestDrMemoryResult {
 	
 	@Test
 	public void testTopParser() throws IOException, InvalidInputException {
-		URL s = TestError.class.getClassLoader().getResource( "top.txt" );
+		URL s = TestDrMemoryResult.class.getClassLoader().getResource( "top.txt" );
 		System.out.println( "URL: " + s );
 		DrMemoryResult result = DrMemoryResult.parse( new File( s.getFile() ) );
 		
@@ -40,7 +40,7 @@ public class TestDrMemoryResult {
 	
 	@Test
 	public void testOutput1() throws IOException, InvalidInputException {
-		URL s = TestError.class.getClassLoader().getResource( "output2.txt" );
+		URL s = TestDrMemoryResult.class.getClassLoader().getResource( "output2.txt" );
 		System.out.println( "URL: " + s );
 		DrMemoryResult result = DrMemoryResult.parse( new File( s.getFile() ) );
 		
@@ -49,7 +49,7 @@ public class TestDrMemoryResult {
 	
 	@Test
 	public void testOutput2() throws IOException, InvalidInputException {
-		URL s = TestError.class.getClassLoader().getResource( "drmemory-light.txt" );
+		URL s = TestDrMemoryResult.class.getClassLoader().getResource( "drmemory-light.txt" );
 		System.out.println( "URL: " + s );
 		DrMemoryResult result = DrMemoryResult.parse( new File( s.getFile() ) );
 		
@@ -59,7 +59,7 @@ public class TestDrMemoryResult {
 	
 	@Test
 	public void testErrorSummary() throws IOException, InvalidInputException {
-		URL s = TestError.class.getClassLoader().getResource( "drmemory-light.txt" );
+		URL s = TestDrMemoryResult.class.getClassLoader().getResource( "drmemory-light.txt" );
 		System.out.println( "URL11: " + s );
 		DrMemoryResult result = DrMemoryResult.parse( new File( s.getFile() ) );
 		
@@ -78,13 +78,13 @@ public class TestDrMemoryResult {
 		
 		assertTrue( result.getBytesOfLeaks().unique == 52 );
 		assertTrue( result.getBytesOfLeaks().total == 69 );
-		assertTrue( result.getBytesOfLeaks().info == 620936 );
+		assertTrue( result.getBytesOfLeaks().info.equals( "620936 bytes" ) );
 		
 		assertTrue( result.getBytesOfPossibleLeaks().unique == 1 );
 		assertTrue( result.getBytesOfPossibleLeaks().total == 1 );
-		assertTrue( result.getBytesOfPossibleLeaks().info == 64 );
+		assertTrue( result.getBytesOfPossibleLeaks().info.equals( "64 bytes" ) );
 		
-		assertTrue( result.getStillReachableAllocations() == 305 );
+		assertTrue( result.getStillReachableAllocations().total == 305 );
 		
 	}
 }
