@@ -25,20 +25,20 @@ public class DrMemoryResult {
 		public long info = 0;
 	}
 	
-	ErrorSummary unaddressableAccesses = new ErrorSummary();
-	ErrorSummary uninitializedAccess = new ErrorSummary();
-	ErrorSummary invalidHeapArguments = new ErrorSummary();
-	ErrorSummary warnings = new ErrorSummary();
-	ErrorSummary bytesOfLeaks = new ErrorSummary();
-	ErrorSummary bytesOfPossibleLeaks = new ErrorSummary();
+	private ErrorSummary unaddressableAccesses = new ErrorSummary();
+	private ErrorSummary uninitializedAccess = new ErrorSummary();
+	private ErrorSummary invalidHeapArguments = new ErrorSummary();
+	private ErrorSummary warnings = new ErrorSummary();
+	private ErrorSummary bytesOfLeaks = new ErrorSummary();
+	private ErrorSummary bytesOfPossibleLeaks = new ErrorSummary();
 	
 	int stillReachableAllocations = 0;
 	
-	String version;
-	String date;
-	String cmd;
-	List<String> elements;
-	Map<Integer, DrMemoryError> errors = new HashMap<Integer, DrMemoryError>();
+	private String version;
+	private String date;
+	private String cmd;
+	private List<String> elements;
+	private Map<Integer, DrMemoryError> errors = new HashMap<Integer, DrMemoryError>();
 	
 	private DrMemoryResult() {
 	}

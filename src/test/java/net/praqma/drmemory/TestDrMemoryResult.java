@@ -85,5 +85,6 @@ public class TestDrMemoryResult {
 		assertTrue( result.getBytesOfPossibleLeaks().info == 64 );
 		
 		assertTrue( result.getStillReachableAllocations() == 305 );
+		
 	}
 }
