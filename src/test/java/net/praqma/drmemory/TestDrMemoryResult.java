@@ -56,4 +56,34 @@ public class TestDrMemoryResult {
 		assertTrue( 2 == result.getErrors().size() );
 		assertTrue( result.getErrors().get( 2 ).getDuplicates() == 115 );
 	}
+	
+	@Test
+	public void testErrorSummary() throws IOException, InvalidInputException {
+		URL s = TestError.class.getClassLoader().getResource( "drmemory-light.txt" );
+		System.out.println( "URL11: " + s );
+		DrMemoryResult result = DrMemoryResult.parse( new File( s.getFile() ) );
+		
+		
+		assertTrue( result.getUnaddressableAccesses().unique == 0 );
+		assertTrue( result.getUnaddressableAccesses().total == 0 );
+		
+		assertTrue( result.getUninitializedAccess().unique == 28 );
+		assertTrue( result.getUninitializedAccess().total == 4014 );
+		
+		assertTrue( result.getInvalidHeapArguments().unique == 1 );
+		assertTrue( result.getInvalidHeapArguments().total == 1 );
+		
+		assertTrue( result.getWarnings().unique == 0 );
+		assertTrue( result.getWarnings().total == 0 );
+		
+		assertTrue( result.getBytesOfLeaks().unique == 52 );
+		assertTrue( result.getBytesOfLeaks().total == 69 );
+		assertTrue( result.getBytesOfLeaks().info == 620936 );
+		
+		assertTrue( result.getBytesOfPossibleLeaks().unique == 1 );
+		assertTrue( result.getBytesOfPossibleLeaks().total == 1 );
+		assertTrue( result.getBytesOfPossibleLeaks().info == 64 );
+		
+		assertTrue( result.getStillReachableAllocations() == 305 );
+	}
 }
