@@ -19,6 +19,21 @@ public class DrMemoryResult {
 	
 	private File file;
 	
+	public static class ErrorSummary {
+		public int unique = 0;
+		public int total = 0;
+		public long info = 0;
+	}
+	
+	ErrorSummary unaddressableAccesses = new ErrorSummary();
+	ErrorSummary uninitializedAccess = new ErrorSummary();
+	ErrorSummary invalidHeapArguments = new ErrorSummary();
+	ErrorSummary warnings = new ErrorSummary();
+	ErrorSummary bytesOfLeaks = new ErrorSummary();
+	ErrorSummary bytesOfPossibleLeaks = new ErrorSummary();
+	
+	int stillReachableAllocations = 0;
+	
 	String version;
 	String date;
 	String cmd;
@@ -49,12 +64,46 @@ public class DrMemoryResult {
 	}
 	
 	
+
+
+	public ErrorSummary getUnaddressableAccesses() {
+		return unaddressableAccesses;
+	}
+
+	public ErrorSummary getUninitializedAccess() {
+		return uninitializedAccess;
+	}
+
+	public ErrorSummary getInvalidHeapArguments() {
+		return invalidHeapArguments;
+	}
+
+	public ErrorSummary getWarnings() {
+		return warnings;
+	}
+
+	public ErrorSummary getBytesOfLeaks() {
+		return bytesOfLeaks;
+	}
+
+	public ErrorSummary getBytesOfPossibleLeaks() {
+		return bytesOfPossibleLeaks;
+	}
+
+	public int getStillReachableAllocations() {
+		return stillReachableAllocations;
+	}
+
+
+
+
 	public static final Pattern rx_version = Pattern.compile( "^.*version (.*?) built on (.*?)$", Pattern.MULTILINE );
 	public static final Pattern rx_command = Pattern.compile( "^Application cmdline: \"(.*)\"\\s*$", Pattern.MULTILINE );
 	//public static final Pattern rx_duplicates = Pattern.compile( "^DUPLICATE ERROR COUNTS:\\s*$(.*?)^\\s*$", Pattern.MULTILINE | Pattern.DOTALL );
 	public static final Pattern rx_duplicates = Pattern.compile( "^DUPLICATE ERROR COUNTS:\\s*$", Pattern.MULTILINE | Pattern.DOTALL );
 	
 	public static final Pattern rx_duplicates_finder = Pattern.compile( "^\\s*Error #\\s*(\\d+):\\s*(\\d+)\\s*$", Pattern.MULTILINE | Pattern.DOTALL );
+	public static final Pattern rx_errors_found = Pattern.compile( "^\\s*ERRORS FOUND:\\s*$", Pattern.MULTILINE | Pattern.DOTALL );
 
 	public static final int __TOP_COUNT = 3;
 
@@ -87,6 +136,7 @@ public class DrMemoryResult {
 		result.elements = DrMemoryResult.getElements( file );
 		
 		for( String e : result.elements ) {
+			
 			if( e.startsWith( "Error #" ) ) {
 				//logger.debug( "HERE" );
 				DrMemoryError error = DrMemoryError.parse( e );
@@ -96,18 +146,106 @@ public class DrMemoryResult {
 			}
 			
 			/* Get duplicate count */
-			//logger.debug( "\n\nE IS: " + e );
 			Matcher m = rx_duplicates.matcher( e );
 			if( m.find() ) {
 				logger.debug( "Found duplicates" );
 				getDuplicates( result, e );
+				
+				continue;
 			}
+			
+			/* Get error summary */
+			Matcher sum = rx_errors_found.matcher( e );
+			if( sum.find() ) {
+				logger.debug( "Found error summary" );
+				getErrorSummary( result, e );
+				
+				continue;
+			}
+			
+			logger.debug( "\n\nE IS: " + e );
+			
+			
 		}
 		
 		
 		return result;
 	}
 	
+	public static final Pattern rx_error_unaddr = Pattern.compile( "^\\s*(\\d+) unique,\\s*(\\d+) total unaddressable access\\(es\\)\\s*$", Pattern.MULTILINE );
+	public static final Pattern rx_error_uninit = Pattern.compile( "^\\s*(\\d+) unique,\\s*(\\d+) total uninitialized access\\(es\\)\\s*$", Pattern.MULTILINE );
+	public static final Pattern rx_error_unvali = Pattern.compile( "^\\s*(\\d+) unique,\\s*(\\d+) total invalid heap argument\\(s\\)\\s*$", Pattern.MULTILINE );
+	public static final Pattern rx_error_warnin = Pattern.compile( "^\\s*(\\d+) unique,\\s*(\\d+) total warning\\(s\\)\\s*$", Pattern.MULTILINE );
+	
+	public static final Pattern rx_error_leaks  = Pattern.compile( "^\\s*(\\d+) unique,\\s*(\\d+) total,\\s*(\\d+) byte\\(s\\) of leak\\(s\\)\\s*$", Pattern.MULTILINE );
+	public static final Pattern rx_error_possib = Pattern.compile( "^\\s*(\\d+) unique,\\s*(\\d+) total,\\s*(\\d+) byte\\(s\\) of possible leak\\(s\\)\\s*$", Pattern.MULTILINE );
+	
+	public static void getErrorSummary( DrMemoryResult result, String summary ) {
+		logger.debug( summary );
+		
+		
+		Matcher m_unaddr = rx_error_unaddr.matcher( summary );
+		if( m_unaddr.find() ) {
+			logger.debug( "Found unaddressble accesses!" );
+			ErrorSummary es = new ErrorSummary();
+			es.unique = Integer.parseInt( m_unaddr.group( 1 ) );
+			es.total = Integer.parseInt( m_unaddr.group( 2 ) );
+			result.unaddressableAccesses = es;
+		}
+		
+		
+		Matcher m_uninit = rx_error_uninit.matcher( summary );
+		if( m_uninit.find() ) {
+			logger.debug( "Found uninitialized accesses!" );
+			ErrorSummary es = new ErrorSummary();
+			es.unique = Integer.parseInt( m_uninit.group( 1 ) );
+			es.total = Integer.parseInt( m_uninit.group( 2 ) );
+			result.uninitializedAccess = es;
+		}
+		
+		
+		Matcher m_invali = rx_error_unvali.matcher( summary );
+		if( m_invali.find() ) {
+			logger.debug( "Found invalid heap argument!" );
+			ErrorSummary es = new ErrorSummary();
+			es.unique = Integer.parseInt( m_invali.group( 1 ) );
+			es.total = Integer.parseInt( m_invali.group( 2 ) );
+			result.invalidHeapArguments = es;
+		}
+		
+		
+		Matcher m_warnin = rx_error_warnin.matcher( summary );
+		if( m_warnin.find() ) {
+			logger.debug( "Found warning!" );
+			ErrorSummary es = new ErrorSummary();
+			es.unique = Integer.parseInt( m_warnin.group( 1 ) );
+			es.total = Integer.parseInt( m_warnin.group( 2 ) );
+			result.warnings = es;
+		}
+		
+
+		Matcher m_leaks = rx_error_leaks.matcher( summary );
+		if( m_leaks.find() ) {
+			logger.debug( "Found leaks!" );
+			ErrorSummary es = new ErrorSummary();
+			es.unique = Integer.parseInt( m_leaks.group( 1 ) );
+			es.total = Integer.parseInt( m_leaks.group( 2 ) );
+			es.info =  Integer.parseInt( m_leaks.group( 3 ) );
+			result.bytesOfLeaks = es;
+		}
+		
+		
+		Matcher m_possib = rx_error_possib.matcher( summary );
+		if( m_possib.find() ) {
+			logger.debug( "Found possible leaks!" );
+			ErrorSummary es = new ErrorSummary();
+			es.unique = Integer.parseInt( m_possib.group( 1 ) );
+			es.total = Integer.parseInt( m_possib.group( 2 ) );
+			es.info =  Integer.parseInt( m_possib.group( 3 ) );
+			result.bytesOfPossibleLeaks = es;
+		}
+		
+	}
 	
 	public static void getDuplicates( DrMemoryResult result, String duplicates ) {
 		Matcher m = rx_duplicates_finder.matcher( duplicates );
@@ -147,6 +285,10 @@ public class DrMemoryResult {
 			}			
 			
 			cnt++;
+		}
+		
+		if( sb.length() > 0 ) {
+			list.add( sb.toString() );
 		}
 		
 		return list;
