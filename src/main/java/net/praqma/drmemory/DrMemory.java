@@ -1,12 +1,7 @@
 package net.praqma.drmemory;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import net.praqma.util.debug.Logger;
 import net.praqma.util.execute.CmdResult;
@@ -19,6 +14,10 @@ public class DrMemory {
 	private String parameters = "";
 	
 	private static String drmemory = "drmemory.exe";
+	
+	private File logDir;
+	
+	private static boolean skipRun = false;
 	
 	private CommandLineInterface cli = CommandLine.getInstance();
 	
@@ -40,15 +39,31 @@ public class DrMemory {
 		DrMemory.drmemory = drmemory;
 	}
 	
-	public void start() throws IOException {
-		String cmd = drmemory + " -- " + application + " " + parameters;
+	public void setLogDir( File dir ) {
+		if( dir.isDirectory() ) {
+			this.logDir = dir;
+		} else {
+			this.logDir = dir.getParentFile();
+		}
 		
+		logger.debug( "Logs are at " + this.logDir );
+	}
+	
+	public void start() throws IOException {
+		String cmd = drmemory + ( logDir != null ? " -logdir " + logDir : "" ) + " -- " + application + " " + parameters;
+		logger.debug( "CMD: " + cmd );
 		CmdResult result = null;
 		try {
-			result = cli.run( cmd );
+			if( !skipRun ) {
+				result = cli.run( cmd );
+			}
 		} catch( Exception e ) {
 			throw new IOException( "Unable to execute " + cmd + ": " + e.getMessage() );
 		}
+	}
+	
+	public static void skipRun() {
+		skipRun = true;
 	}
 
 }

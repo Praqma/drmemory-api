@@ -29,7 +29,7 @@ public class TestError {
 	}
 
 	@Test
-	public void blaha() throws IOException, InvalidInputException {
+	public void testHeader() throws IOException, InvalidInputException {
 		URL s = TestError.class.getClassLoader().getResource( "output1.txt" );
 		
 		DrMemoryError error = DrMemoryError.parse( UrlToString( s ) );
