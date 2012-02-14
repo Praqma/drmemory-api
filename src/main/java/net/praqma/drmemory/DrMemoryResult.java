@@ -180,6 +180,8 @@ public class DrMemoryResult {
 	public static final Pattern rx_error_leaks  = Pattern.compile( "^\\s*(\\d+) unique,\\s*(\\d+) total,\\s*(\\d+) byte\\(s\\) of leak\\(s\\)\\s*$", Pattern.MULTILINE );
 	public static final Pattern rx_error_possib = Pattern.compile( "^\\s*(\\d+) unique,\\s*(\\d+) total,\\s*(\\d+) byte\\(s\\) of possible leak\\(s\\)\\s*$", Pattern.MULTILINE );
 	
+	public static final Pattern rx_error_still_ = Pattern.compile( "^\\s*(\\d+) still-reachable allocation\\(s\\)\\s*$", Pattern.MULTILINE );
+	
 	public static void getErrorSummary( DrMemoryResult result, String summary ) {
 		logger.debug( summary );
 		
@@ -243,6 +245,12 @@ public class DrMemoryResult {
 			es.total = Integer.parseInt( m_possib.group( 2 ) );
 			es.info =  Integer.parseInt( m_possib.group( 3 ) );
 			result.bytesOfPossibleLeaks = es;
+		}
+		
+		Matcher m_still_ = rx_error_still_.matcher( summary );
+		if( m_still_.find() ) {
+			logger.debug( "still-reachable allocations!" );
+			result.stillReachableAllocations = Integer.parseInt( m_still_.group( 1 ) );
 		}
 		
 	}
