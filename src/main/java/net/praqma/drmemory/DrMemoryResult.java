@@ -22,6 +22,10 @@ public class DrMemoryResult {
 		public Integer unique;
 		public Integer total;
 		public String info;
+		
+		public String toString() {
+			return header;
+		}
 	}
 	
 	private ErrorSummary unaddressableAccesses = new ErrorSummary();
