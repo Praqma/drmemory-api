@@ -87,4 +87,13 @@ public class TestDrMemoryResult {
 		assertTrue( result.getStillReachableAllocations().total == 305 );
 		
 	}
+	
+	@Test
+	public void testSummaries() throws InvalidInputException, IOException {
+		URL s = TestDrMemoryResult.class.getClassLoader().getResource( "drmemory-light.txt" );
+		System.out.println( "URL11: " + s );
+		DrMemoryResult result = DrMemoryResult.parse( new File( s.getFile() ) );
+		
+		logger.debug( "LIST: "  + result.getSummaries() );
+	}
 }
