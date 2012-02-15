@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 
 import net.praqma.util.debug.Logger;
+import net.praqma.util.debug.Logger.LogLevel;
+import net.praqma.util.debug.appenders.ConsoleAppender;
 import net.praqma.util.execute.CmdResult;
 import net.praqma.util.execute.CommandLine;
 import net.praqma.util.execute.CommandLineInterface;
@@ -33,6 +35,12 @@ public class DrMemory {
 	public DrMemory( File application, String parameters ) {
 		this.application = application;
 		this.parameters = parameters;
+	}
+	
+	public static void enableLogging() {
+		ConsoleAppender app = new ConsoleAppender();
+		app.setMinimumLevel( LogLevel.DEBUG );
+		Logger.addAppender( app );
 	}
 	
 	public static void setExecutable( String drmemory ) {
