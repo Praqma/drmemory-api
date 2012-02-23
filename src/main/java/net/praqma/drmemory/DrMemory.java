@@ -1,8 +1,10 @@
 package net.praqma.drmemory;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 
+import net.praqma.drmemory.exceptions.NoSuchResultException;
 import net.praqma.util.debug.Logger;
 import net.praqma.util.debug.Logger.LogLevel;
 import net.praqma.util.debug.appenders.ConsoleAppender;
@@ -48,17 +50,39 @@ public class DrMemory {
 	}
 	
 	public void setLogDir( File dir ) {
-		if( dir.isDirectory() ) {
-			this.logDir = dir;
-		} else {
-			this.logDir = dir.getParentFile();
-		}
+		this.logDir = dir;
 		
 		logger.debug( "Logs are at " + this.logDir );
 	}
 	
+	public File getResultFile() throws NoSuchResultException {
+		
+		/* Get dirs in path */
+		File[] paths = logDir.listFiles( new FilenameFilter() {
+			public boolean accept( File file, String name ) {
+				return file.isDirectory() && !name.matches( "\\.{1,2}" );
+			}
+		} );
+		
+		/* For each path under log dir */
+		for( File path : paths ) {
+			File[] files = path.listFiles( new FilenameFilter() {
+				public boolean accept( File file, String name ) {
+					return file.isFile() && name.equalsIgnoreCase( "result.txt" );
+				}
+			} );
+			
+			/* If there exists one result, use it */
+			if( files.length > 0 ) {
+				return files[0];
+			}
+		}
+		
+		throw new NoSuchResultException();
+	}
+	
 	public void start() throws IOException {
-		String cmd = drmemory + ( logDir != null ? " -logdir " + logDir : "" ) + " -- " + application + " " + parameters;
+		String cmd = drmemory + ( logDir != null ? " -logdir " + logDir : "" ) + " -batch -- " + application + " " + parameters;
 		logger.debug( "CMD: " + cmd );
 		CmdResult result = null;
 		try {
