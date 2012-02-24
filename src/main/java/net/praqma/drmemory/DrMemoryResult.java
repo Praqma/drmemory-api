@@ -218,7 +218,7 @@ public class DrMemoryResult {
 		if( m_unaddr.find() ) {
 			logger.debug( "Found unaddressble accesses!" );
 			ErrorSummary es = new ErrorSummary();
-			es.header = "Unaddressble accesses";
+			es.header = "Unaddressable accesses";
 			es.unique = Integer.parseInt( m_unaddr.group( 1 ) );
 			es.total = Integer.parseInt( m_unaddr.group( 2 ) );
 			result.unaddressableAccesses = es;
