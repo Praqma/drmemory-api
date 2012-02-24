@@ -186,6 +186,8 @@ public class DrMemoryResult {
 		}
 		
 		/* Make list */
+		result.list.add( result.possibleLeakCount );
+		result.list.add( result.leakCount );
 		result.list.add( result.bytesOfLeaks );
 		result.list.add( result.bytesOfPossibleLeaks );
 		result.list.add( result.invalidHeapArguments );
@@ -267,6 +269,7 @@ public class DrMemoryResult {
 			
 			ErrorSummary es2 = new ErrorSummary();
 			es2.total = Integer.parseInt( m_leaks.group( 3 ) );
+			es2.header = "Bytes of Leak";
 			result.bytesOfLeaks = es2;
 		}
 		
@@ -282,6 +285,7 @@ public class DrMemoryResult {
 			
 			ErrorSummary es2 = new ErrorSummary();
 			es2.total = Integer.parseInt( m_leaks.group( 3 ) );
+			es2.header = "Bytes of Possible Leak";
 			result.bytesOfPossibleLeaks = es2;
 		}
 		
