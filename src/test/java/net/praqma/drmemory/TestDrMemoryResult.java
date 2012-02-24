@@ -76,13 +76,11 @@ public class TestDrMemoryResult {
 		assertTrue( result.getWarnings().unique == 0 );
 		assertTrue( result.getWarnings().total == 0 );
 		
-		assertTrue( result.getBytesOfLeaks().unique == 52 );
-		assertTrue( result.getBytesOfLeaks().total == 69 );
-		assertTrue( result.getBytesOfLeaks().info.equals( "620936 bytes" ) );
+		assertTrue( result.getLeakCount().unique == 52 );
+		assertTrue( result.getLeakCount().total == 69 );
 		
-		assertTrue( result.getBytesOfPossibleLeaks().unique == 1 );
-		assertTrue( result.getBytesOfPossibleLeaks().total == 1 );
-		assertTrue( result.getBytesOfPossibleLeaks().info.equals( "64 bytes" ) );
+		assertTrue( result.getPossibleLeakCount().unique == 1 );
+		assertTrue( result.getPossibleLeakCount().total == 1 );
 		
 		assertTrue( result.getStillReachableAllocations().total == 305 );
 		

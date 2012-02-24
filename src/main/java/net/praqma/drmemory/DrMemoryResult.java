@@ -21,7 +21,6 @@ public class DrMemoryResult {
 		public String header = "";
 		public Integer unique;
 		public Integer total;
-		public String info;
 		
 		public String toString() {
 			return header;
@@ -33,6 +32,10 @@ public class DrMemoryResult {
 	private ErrorSummary invalidHeapArguments = new ErrorSummary();
 	private ErrorSummary warnings = new ErrorSummary();
 	private ErrorSummary bytesOfLeaks = new ErrorSummary();
+	
+	private ErrorSummary leakCount = new ErrorSummary();
+	private ErrorSummary possibleLeakCount = new ErrorSummary();
+	
 	private ErrorSummary bytesOfPossibleLeaks = new ErrorSummary();
 	private ErrorSummary stillReachableAllocations = new ErrorSummary();
 	
@@ -89,9 +92,17 @@ public class DrMemoryResult {
 	public ErrorSummary getBytesOfLeaks() {
 		return bytesOfLeaks;
 	}
+	
+	public ErrorSummary getLeakCount() {
+		return leakCount;
+	}
 
 	public ErrorSummary getBytesOfPossibleLeaks() {
 		return bytesOfPossibleLeaks;
+	}
+	
+	public ErrorSummary getPossibleLeakCount() {
+		return possibleLeakCount;
 	}
 
 	public ErrorSummary getStillReachableAllocations() {
@@ -252,8 +263,11 @@ public class DrMemoryResult {
 			es.header = "Leaks";
 			es.unique = Integer.parseInt( m_leaks.group( 1 ) );
 			es.total = Integer.parseInt( m_leaks.group( 2 ) );
-			es.info = m_leaks.group( 3 ) + " bytes";
-			result.bytesOfLeaks = es;
+			result.leakCount = es;
+			
+			ErrorSummary es2 = new ErrorSummary();
+			es2.total = Integer.parseInt( m_leaks.group( 3 ) );
+			result.bytesOfLeaks = es2;
 		}
 		
 		
@@ -264,8 +278,11 @@ public class DrMemoryResult {
 			es.header = "Possible leaks";
 			es.unique = Integer.parseInt( m_possib.group( 1 ) );
 			es.total = Integer.parseInt( m_possib.group( 2 ) );
-			es.info =  m_possib.group( 3 ) + " bytes";
-			result.bytesOfPossibleLeaks = es;
+			result.possibleLeakCount = es;
+			
+			ErrorSummary es2 = new ErrorSummary();
+			es2.total = Integer.parseInt( m_leaks.group( 3 ) );
+			result.bytesOfPossibleLeaks = es2;
 		}
 		
 		Matcher m_still_ = rx_error_still_.matcher( summary );
