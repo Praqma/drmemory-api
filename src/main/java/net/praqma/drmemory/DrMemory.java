@@ -22,6 +22,7 @@ public class DrMemory {
 	private File logDir;
 	
 	private static boolean skipRun = false;
+	private boolean quiet = true;
 	
 	private CommandLineInterface cli = CommandLine.getInstance();
 	
@@ -82,7 +83,7 @@ public class DrMemory {
 	}
 	
 	public void start() throws IOException {
-		String cmd = drmemory + ( logDir != null ? " -logdir " + logDir : "" ) + " -batch -quiet -- " + application + " " + parameters;
+		String cmd = drmemory + ( logDir != null ? " -logdir " + logDir : "" ) + " -batch" + ( quiet ? " -quiet" : "" ) + " -- " + application + " " + parameters;
 		logger.debug( "CMD: " + cmd );
 		CmdResult result = null;
 		try {
