@@ -284,7 +284,7 @@ public class DrMemoryResult {
 			result.possibleLeakCount = es;
 			
 			ErrorSummary es2 = new ErrorSummary();
-			es2.total = Integer.parseInt( m_leaks.group( 3 ) );
+			es2.total = Integer.parseInt( m_possib.group( 3 ) );
 			es2.header = "Bytes of Possible Leak";
 			result.bytesOfPossibleLeaks = es2;
 		}
