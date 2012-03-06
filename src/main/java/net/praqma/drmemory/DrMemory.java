@@ -50,6 +50,10 @@ public class DrMemory {
 		DrMemory.drmemory = drmemory;
 	}
 	
+	public void setApplication( String application ) {
+		this.application = new File( application );
+	}
+	
 	public void setLogDir( File dir ) {
 		this.logDir = dir;
 		

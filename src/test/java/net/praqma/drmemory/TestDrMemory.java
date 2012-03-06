@@ -7,8 +7,10 @@ import java.io.IOException;
 
 import net.praqma.util.debug.Logger;
 import net.praqma.util.debug.Logger.LogLevel;
+import net.praqma.util.debug.appenders.Appender;
 import net.praqma.util.debug.appenders.ConsoleAppender;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -16,14 +18,20 @@ import org.junit.Test;
 public class TestDrMemory {
 	
 	private static Logger logger = Logger.getLogger();
+	private static Appender app;
 
 	@BeforeClass
 	public static void setupExecutable() {
-		ConsoleAppender app = new ConsoleAppender();
+		app = new ConsoleAppender();
 		app.setMinimumLevel( LogLevel.DEBUG );
 		Logger.addAppender( app );
 		
 		DrMemory.skipRun();
+	}
+	
+	@AfterClass
+	public static void end() {
+		Logger.removeAppender( app );
 	}
 	
 	@Test

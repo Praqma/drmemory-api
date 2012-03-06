@@ -12,20 +12,28 @@ import java.net.URL;
 import net.praqma.drmemory.exceptions.InvalidInputException;
 import net.praqma.util.debug.Logger;
 import net.praqma.util.debug.Logger.LogLevel;
+import net.praqma.util.debug.appenders.Appender;
 import net.praqma.util.debug.appenders.ConsoleAppender;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TestError {
 	
 	private static Logger logger = Logger.getLogger();
+	private static Appender app;
 	
 	@BeforeClass
 	public static void start() {
-		ConsoleAppender app = new ConsoleAppender();
+		app = new ConsoleAppender();
 		app.setMinimumLevel( LogLevel.DEBUG );
 		Logger.addAppender( app );
+	}
+	
+	@AfterClass
+	public static void end() {
+		Logger.removeAppender( app );
 	}
 
 	@Test
