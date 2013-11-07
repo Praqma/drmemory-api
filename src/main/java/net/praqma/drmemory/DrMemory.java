@@ -87,7 +87,7 @@ public class DrMemory {
 	}
 	
 	public void start() throws IOException {
-		String cmd = drmemory + ( logDir != null ? " -logdir " + logDir : "" ) + " -batch" + ( quiet ? " -quiet" : "" ) + " -- " + application + " " + parameters;
+		String cmd = drmemory + ( logDir != null ? " -logdir \"" + logDir + "\"" : "" ) + " -batch" + ( quiet ? " -quiet" : "" ) + " -- \"" + application + "\" " + parameters;
 		logger.debug( "CMD: " + cmd );
 		CmdResult result = null;
 		try {
