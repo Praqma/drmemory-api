@@ -20,6 +20,7 @@ public class DrMemory {
 	private static String drmemory = "drmemory.exe";
 	
 	private File logDir;
+	private File workDir;
 	
 	private static boolean skipRun = false;
 	private boolean quiet = true;
@@ -60,6 +61,12 @@ public class DrMemory {
 		logger.debug( "Logs are at " + this.logDir );
 	}
 	
+	public void setWorkDir( File dir ) {
+		this.workDir = dir;
+		
+		logger.debug( "Working Dir is at " + this.workDir );
+	}
+	
 	public File getResultFile() throws NoSuchResultException {
 		
 		/* Get dirs in path */
@@ -92,7 +99,7 @@ public class DrMemory {
 		CmdResult result = null;
 		try {
 			if( !skipRun ) {
-				result = cli.run( cmd );
+				result = cli.run( cmd, this.workDir );
 			}
 		} catch( Exception e ) {
 			throw new IOException( "Unable to execute " + cmd + ": " + e.getMessage() );
