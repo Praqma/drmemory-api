@@ -3,7 +3,7 @@
 	<groupId>net.praqma</groupId>
 	<artifactId>drmemory-api</artifactId>
 	<packaging>jar</packaging>
-	<version>0.1.4</version>
+	<version>0.1.5-SNAPSHOT</version>
 	<name>Dr. Memory Api</name>
 	<url>http://maven.apache.org</url>
 	
