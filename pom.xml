@@ -7,6 +7,12 @@
 	<name>Dr. Memory Api</name>
 	<url>http://maven.apache.org</url>
 	
+    <developers>
+        <developer>
+            <id>praqma_josra</id>
+            <name>Praqma Josra</name>
+        </developer>
+    </developers>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
